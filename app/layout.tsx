@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.variable}>
       <body className="sticky top-0 bg-background text-foreground">
-        <Header />
+        {/* <Header /> */}
         <main className="flex flex-col items-center">{children}</main>
       </body>
     </html>

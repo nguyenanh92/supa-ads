@@ -1,4 +1,4 @@
-import { TodoList } from "@/components/todo-list";
+import { TodoList } from "@/app/todos/components/todo-list";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";

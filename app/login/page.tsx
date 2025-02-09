@@ -25,8 +25,9 @@ export default async function Login({
   } = await supabase.auth.getUser();
 
   if (user) {
-    return redirect("/todos");
+    return redirect("/settings");
   }
+
 
   // Xử lý searchParams nếu nó là một Promise
   const resolvedSearchParams = await searchParams;
@@ -73,13 +74,13 @@ export default async function Login({
               Login
             </Button>
           </form>
-          <OAuthButtons />
-          <div className="text-center text-sm">
+          {/* <OAuthButtons /> */}
+          {/* <div className="text-center text-sm">
             Don&apos;t have an account?{" "}
             <button formAction={signup} form="login-form" className="underline">
               Sign up
             </button>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </section>
