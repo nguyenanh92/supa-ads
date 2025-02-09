@@ -16,7 +16,7 @@ import { OAuthButtons } from "./oauth-signin";
 export default async function Login({
   searchParams,
 }: {
-  searchParams: { message: string };
+  searchParams: Promise<{ message: string }>;
 }) {
   const supabase = await createClient();
 
@@ -27,6 +27,9 @@ export default async function Login({
   if (user) {
     return redirect("/todos");
   }
+
+  // Xử lý searchParams nếu nó là một Promise
+  const resolvedSearchParams = await searchParams;
 
   return (
     <section className="h-[calc(100vh-57px)] flex justify-center items-center">
@@ -61,9 +64,9 @@ export default async function Login({
                 required
               />
             </div>
-            {searchParams.message && (
+            {resolvedSearchParams.message && (
               <div className="text-sm font-medium text-destructive">
-                {searchParams.message}
+                {resolvedSearchParams.message}
               </div>
             )}
             <Button formAction={emailLogin} className="w-full">
