@@ -1,6 +1,6 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-import Header from "@/components/header";
+// import Header from "@/components/header";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -8,8 +8,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Todo App",
-  description: "An example of Supabase, Auth and NextJS server actions",
+  title: "ADS | Tỷ giá ngoại tệ",
+  description: "ADS | Tỷ giá ngoại tệ",
 };
 
 export default function RootLayout({

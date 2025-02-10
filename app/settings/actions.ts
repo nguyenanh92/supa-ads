@@ -5,7 +5,9 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
 type Setting = Database['public']['Tables']['settings']['Row'];
-type SettingInsert = Database['public']['Tables']['settings']['Insert'];
+type SettingInsert = Omit<Database['public']['Tables']['settings']['Insert'], 'user_id'> & {
+  user_id?: string; // Make user_id optional in client-side types
+};
 type SettingUpdate = Database['public']['Tables']['settings']['Update'];
 
 // Helper function để kiểm tra user và khởi tạo client
@@ -67,11 +69,8 @@ export async function getSetting(key: string) {
 }
 
 // Thêm setting mới
-export async function createSetting(formData: FormData) {
-    const key = formData.get('key') as string;
-    const value = formData.get('value') as string;
-
-    if (!key?.trim()) {
+export async function createSetting(settingData: SettingInsert) {
+    if (!settingData.key?.trim()) {
         throw new Error("Key không được để trống");
     }
 
@@ -79,8 +78,7 @@ export async function createSetting(formData: FormData) {
         const { supabase, user } = await getAuthenticatedClient();
 
         const newSetting: SettingInsert = {
-            key: key.trim(),
-            value: value?.trim() || null,
+            ...settingData,
             user_id: user.id,
             is_active: true,
             inserted_at: new Date().toISOString()
@@ -88,7 +86,7 @@ export async function createSetting(formData: FormData) {
         
         const { error } = await supabase
             .from('settings')
-            .insert(newSetting);
+            .insert(newSetting as Database['public']['Tables']['settings']['Insert']);
 
         if (error) throw error;
 

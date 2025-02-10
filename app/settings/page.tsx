@@ -3,6 +3,8 @@ import { SettingsForm } from "@/app/settings/components/settings-form";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { ExchangeRateCard } from "@/app/settings/components/exchange-rate-card";
+import Header from "@/components/header";
 
 export default async function SettingsPage() {
   const supabase = await createClient();
@@ -23,32 +25,44 @@ export default async function SettingsPage() {
     .eq("is_active", true)
     .order("inserted_at", { ascending: false });
 
+
   return (
-    <section className="p-3 pt-6 max-w-2xl w-full flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-          Cài đặt
-        </h1>
-        <p className="text-muted-foreground">
-          Quản lý các cài đặt của bạn
-        </p>
-      </div>
+    <>
+      <Header />
 
-      <Separator className="w-full" />
+      <section className="p-3 pt-6 max-w-2xl w-full flex flex-col gap-6">
+        {/* <div className="flex flex-col gap-2">
+    <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+      Cài đặt
+    </h1>
+    <p className="text-muted-foreground">
+      Quản lý các cài đặt của bạn
+    </p>
+  </div> 
 
-      {/* Form thêm setting mới */}
-      <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold">Thêm cài đặt mới</h2>
-        <SettingsForm />
-      </div>
+        <Separator className="w-full" />*/}
 
-      <Separator className="w-full" />
+        {/* Thêm ExchangeRateCard */}
+        <div className="flex flex-col gap-4">
+          <h2 className="text-2xl font-bold">Tỷ giá hiện tại</h2>
+          <ExchangeRateCard />
+        </div>
 
-      {/* Danh sách settings */}
-      <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold">Danh sách cài đặt</h2>
-        <SettingsList settings={settings ?? []} />
-      </div>
-    </section>
+        <Separator className="w-full" />
+
+        {/* Form thêm setting mới */}
+        <div className="flex flex-col gap-4">
+          <h2 className="text-2xl font-bold">Cài đặt %</h2>
+          <SettingsForm />
+        </div>
+
+        <Separator className="w-full" />
+
+        {/* Danh sách settings */}
+        <div className="flex flex-col gap-4">
+          <h2 className="text-2xl font-bold">% đã cài đặt</h2>
+          <SettingsList settings={settings ?? []} />
+        </div>
+      </section></>
   );
 }

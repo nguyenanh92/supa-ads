@@ -36,9 +36,9 @@ export default async function Login({
     <section className="h-[calc(100vh-57px)] flex justify-center items-center">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Đăng nhập</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Nhập email và mật khẩu của bạn để đăng nhập vào tài khoản của bạn
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
@@ -55,7 +55,7 @@ export default async function Login({
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Mật khẩu</Label>
               </div>
               <Input
                 minLength={6}
@@ -71,7 +71,7 @@ export default async function Login({
               </div>
             )}
             <Button formAction={emailLogin} className="w-full">
-              Login
+              Đăng nhập
             </Button>
           </form>
           {/* <OAuthButtons /> */}

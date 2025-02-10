@@ -1,18 +1,34 @@
 "use client"
 
-import { createSetting } from "@/app/settings/actions";
+import { createSetting, updateSetting, getSetting } from "@/app/settings/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+// import { useToast } from "@/components/ui/use-toast";
 
 export function SettingsForm() {
   // const { toast } = useToast();
 
   async function handleSubmit(formData: FormData) {
     try {
-      await createSetting(formData);
+      // First get existing setting
+      const existingSetting = await getSetting("PERCENT");
+      
+      // Then create settingData using existingSetting
+      const value = formData.get("value");
+      const settingData = {
+        key: "PERCENT",
+        value: value?.toString() || "",
+        ...(existingSetting && { id: existingSetting.id })
+      };
+
+      if (existingSetting) {
+        await updateSetting(settingData);
+      } else {
+        await createSetting(settingData);
+      }
       // toast({
       //   title: "Thành công",
-      //   description: "Đã thêm cài đặt mới",
+      //   description: "Đã cập nhật tỷ lệ phần trăm",
       // });
     } catch (error) {
       // toast({
@@ -24,28 +40,33 @@ export function SettingsForm() {
   }
 
   return (
-    <form action={handleSubmit} className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="key">Key</label>
-          <Input
-            id="key"
-            name="key"
-            placeholder="Nhập key..."
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="value">Giá trị</label>
-          <Input
-            id="value"
-            name="value"
-            placeholder="Nhập giá trị..."
-          />
-        </div>
+    <form action={handleSubmit} className="max-w-md mx-auto p-6 space-y-6">
+      <div className="space-y-2">
+        <label 
+          htmlFor="value" 
+          className="text-lg font-medium"
+        >
+          Tỷ lệ phần trăm (%)
+        </label>
+        <Input
+          id="value"
+          name="value"
+          type="number"
+          min="0"
+          max="100"
+          placeholder="Nhập tỷ lệ phần trăm..."
+          required
+          className="text-lg"
+        />
+        <p className="text-sm text-gray-500">
+          Nhập giá trị từ 0 đến 100
+        </p>
       </div>
-      <Button type="submit" className="w-full">
-        Thêm cài đặt
+      <Button 
+        type="submit" 
+        className="w-full text-lg py-6"
+      >
+        Cập nhật tỷ lệ
       </Button>
     </form>
   );

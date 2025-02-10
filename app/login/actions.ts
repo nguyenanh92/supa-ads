@@ -24,7 +24,7 @@ export async function emailLogin(formData: FormData) {
     }
 
     revalidatePath('/', 'layout')
-    redirect('/todos')
+    redirect('/settings')
 }
 
 export async function signup(formData: FormData) {
