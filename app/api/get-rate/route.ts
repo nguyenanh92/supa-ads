@@ -6,6 +6,13 @@ const baseUrl = process.env.BANK_URL;
 
 export async function GET() {
   try {
+    // Add CORS headers
+    const headers = {
+      "Access-Control-Allow-Origin": "https://adsmanager.facebook.com",
+      "Access-Control-Allow-Methods": "GET",
+      "Access-Control-Allow-Headers": "Content-Type",
+    };
+
     if (!baseUrl) {
       throw new Error("BANK_URL environment variable is not defined");
     }
@@ -23,7 +30,7 @@ export async function GET() {
     const supabase = await createClient();
     const { data: settings, error } = await supabase.from("settings").select("*").eq("key", "PERCENT").single();
 
-    console.log("🚀 ~ GET ~ settings:", settings)
+    // console.log("🚀 ~ GET ~ settings:", settings)
     if (error) {
       throw error;
     }
@@ -52,11 +59,34 @@ export async function GET() {
         calculated: calculated,
         lastUpdate: rateData.ExrateList.DateTime._text,
       },
-      { status: 200 }
+      {
+        status: 200,
+        headers: headers,
+      }
     );
   } catch (error) {
     console.error("Error fetching data:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    return NextResponse.json(
+      { error: errorMessage },
+      {
+        status: 500,
+      }
+    );
   }
+}
+
+// You might also need to add an OPTIONS handler for preflight requests
+export async function OPTIONS() {
+  return NextResponse.json(
+    {},
+    {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "https://adsmanager.facebook.com",
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    }
+  );
 }
